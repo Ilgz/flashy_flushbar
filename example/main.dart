@@ -43,7 +43,8 @@ class MyApp extends StatelessWidget {
                   },
                 ),
                 boxShadows: const [
-                  BoxShadow(color: Colors.blue, blurRadius: 4.0, spreadRadius: 2.0),
+                  BoxShadow(
+                      color: Colors.blue, blurRadius: 4.0, spreadRadius: 2.0),
                 ],
               ).show();
 
