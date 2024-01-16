@@ -24,9 +24,27 @@ class MyApp extends StatelessWidget {
             onPressed: () {
               // Show a simple FlashyFlushbar
               FlashyFlushbar(
-                message: 'Hello, Flutter!',
-                duration: Duration(seconds: 3),
-                // Customize other options as needed
+                leadingWidget: const Icon(
+                  Icons.error_outline,
+                  color: Colors.black,
+                  size: 24,
+                ),
+                message: 'Hello, Flashy Flushbar!',
+                duration: const Duration(seconds: 3),
+                backgroundColor: Colors.green,
+                trailingWidget: IconButton(
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                  onPressed: () {
+                    FlashyFlushbar.cancel();
+                  },
+                ),
+                boxShadows: const [
+                  BoxShadow(color: Colors.blue, blurRadius: 4.0, spreadRadius: 2.0),
+                ],
               ).show();
 
               // Show undismissible FlashyFlushbar
