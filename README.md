@@ -47,9 +47,24 @@ Now you can use FlashyFlushbar in your Flutter app. Here's a basic example:
 
 ```dart
 FlashyFlushbar(
-  message: 'Hello, Flutter!',
-  duration: Duration(seconds: 3),
-  // Customize other options as needed
+leadingWidget: const Icon(
+Icons.error_outline,
+color: Colors.black,
+size: 24,
+),
+message: 'Hello from Flashy Flushbar',
+duration: const Duration(seconds: 1),
+trailingWidget: IconButton(
+icon: const Icon(
+Icons.close,
+color: Colors.black,
+size: 24,
+),
+onPressed: () {
+FlashyFlushbar.cancel();
+},
+),
+isDismissible: false,
 ).show();
 ```
 
