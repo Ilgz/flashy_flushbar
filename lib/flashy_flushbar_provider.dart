@@ -1,5 +1,3 @@
-library flashy_flushbar;
-
 import 'package:flashy_flushbar/flashy_proxy.dart';
 import 'package:flutter/material.dart';
 
