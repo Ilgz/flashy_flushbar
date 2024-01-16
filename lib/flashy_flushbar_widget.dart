@@ -27,7 +27,7 @@ class FlashyFlushbar extends StatefulWidget {
   /// The `backgroundColor` parameter sets the background color of the flushbar.
   /// The default color is white.
   ///
-  /// The `boxShadow` parameter defines the box shadow for the flushbar. The
+  /// The `boxShadows` parameter defines the box shadow for the flushbar. The
   /// default is a subtle box shadow.
   ///
   /// The `borderRadius` parameter sets the border radius of the flushbar. The
@@ -67,7 +67,7 @@ class FlashyFlushbar extends StatefulWidget {
     ),
     this.margin = const EdgeInsets.only(left: 32, right: 32, top: 20),
     this.backgroundColor = Colors.white,
-    this.boxShadow = const [
+    this.boxShadows = const [
       BoxShadow(
         color: Color(0x1a000000),
         blurRadius: 10,
@@ -101,8 +101,8 @@ class FlashyFlushbar extends StatefulWidget {
   /// The background color of the flushbar.
   final Color backgroundColor;
 
-  /// The box shadow for the flushbar.
-  final List<BoxShadow>? boxShadow;
+  /// The box shadows for the flushbar.
+  final List<BoxShadow>? boxShadows;
 
   /// The border radius of the flushbar.
   final BorderRadiusGeometry borderRadius;
@@ -264,7 +264,7 @@ class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProvid
                           margin: widget.margin,
                           decoration: BoxDecoration(
                             color: widget.backgroundColor,
-                            boxShadow: widget.boxShadow,
+                            boxShadow: widget.boxShadows,
                             borderRadius: widget.borderRadius,
                           ),
                           padding: EdgeInsets.only(
