@@ -15,7 +15,7 @@ Add the following dependency to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flashy_flushbar: ^0.0.1
+  flashy_flushbar: ^1.0.0
 ```
 
 Then run:
@@ -44,7 +44,7 @@ void main() {
 ```
 &nbsp;
  <tr>
-    <td><img src="screenshots/example_1.jpg" height="200"></td>
+    <td><img src="https://raw.githubusercontent.com/Ilgz/flashy_flushbar/main/screenshots/example_1.jpg" height="200"></td>
   </tr>
 
   
