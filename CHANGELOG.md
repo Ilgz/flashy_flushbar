@@ -1,3 +1,9 @@
+## 1.0.1
+
+### Added
+
+- Added custom widget support
+
 ## 1.0.0
 
 ### Changed

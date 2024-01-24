@@ -84,6 +84,7 @@ class FlashyFlushbar extends StatefulWidget {
     this.dismissDirection = DismissDirection.horizontal,
     this.onTap,
     this.isDismissible = true,
+    this.customWidget,
   });
 
   /// The duration for which the flushbar will be displayed.
@@ -143,6 +144,11 @@ class FlashyFlushbar extends StatefulWidget {
   /// The default value is `true`.
   final bool isDismissible;
 
+  ///
+  /// If [customWidget] is provided, other properties such as [leadingWidget],
+  /// [message], [trailingWidget], [messageStyle], etc., will be ignored.
+  final Widget? customWidget;
+
   @override
   State<FlashyFlushbar> createState() => _FlashyFlushbarState();
 
@@ -155,17 +161,12 @@ class FlashyFlushbar extends StatefulWidget {
       return this;
     });
     if (FlashyProxy.buildContext == null) {
-      throw Exception(
-          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
 
-    Overlay.of(FlashyProxy.buildContext!, debugRequiredFor: this)
-        .insert(overlay);
+    Overlay.of(FlashyProxy.buildContext!, debugRequiredFor: this).insert(overlay);
     FlashyProxy.entries[UniqueKey()] = overlay;
-    Future.delayed(
-        (animationDuration * 2) +
-            (duration) +
-            const Duration(milliseconds: 300), () {
+    Future.delayed((animationDuration * 2) + (duration) + const Duration(milliseconds: 300), () {
       if (overlay.mounted) {
         overlay.remove();
       }
@@ -181,8 +182,7 @@ class FlashyFlushbar extends StatefulWidget {
   /// Throws an exception if [FlashyProxy.buildContext] is null.
   static void cancel() {
     if (FlashyProxy.buildContext == null) {
-      throw Exception(
-          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
     if (FlashyProxy.entries.isEmpty) return;
     final lastOverlayEntry = FlashyProxy.entries.values.last;
@@ -200,8 +200,7 @@ class FlashyFlushbar extends StatefulWidget {
   /// Throws an exception if [FlashyProxy.buildContext] is null.
   static void cancelAll() {
     if (FlashyProxy.buildContext == null) {
-      throw Exception(
-          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
     for (final overlayEntry in FlashyProxy.entries.values) {
       if (overlayEntry.mounted) {
@@ -212,15 +211,13 @@ class FlashyFlushbar extends StatefulWidget {
   }
 }
 
-class _FlashyFlushbarState extends State<FlashyFlushbar>
-    with SingleTickerProviderStateMixin {
+class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProviderStateMixin {
   double get toastHeight => widget.height;
 
   double get fullHeight => toastHeight + widget.margin.top;
 
   double get fullWidth =>
-      MediaQuery.of(context).size.width -
-      (widget.margin.left + widget.margin.right);
+      MediaQuery.of(context).size.width - (widget.margin.left + widget.margin.right);
 
   late final animationController =
       AnimationController(vsync: this, duration: widget.animationDuration);
@@ -266,8 +263,7 @@ class _FlashyFlushbarState extends State<FlashyFlushbar>
                   return Stack(
                     children: [
                       Positioned(
-                        top: (fullHeight * animationController.value) -
-                            (fullHeight),
+                        top: (fullHeight * animationController.value) - (fullHeight),
                         child: Container(
                           width: fullWidth,
                           height: toastHeight,
@@ -281,23 +277,23 @@ class _FlashyFlushbarState extends State<FlashyFlushbar>
                             left: widget.horizontalPadding.left,
                             right: widget.horizontalPadding.right,
                           ),
-                          child: Row(
-                            children: [
-                              widget.leadingWidget,
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          widget.messageHorizontalSpacing),
-                                  child: Text(
-                                    widget.message,
-                                    style: widget.messageStyle,
+                          child: widget.customWidget ??
+                              Row(
+                                children: [
+                                  widget.leadingWidget,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: widget.messageHorizontalSpacing),
+                                      child: Text(
+                                        widget.message,
+                                        style: widget.messageStyle,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  widget.trailingWidget,
+                                ],
                               ),
-                              widget.trailingWidget,
-                            ],
-                          ),
                         ),
                       ),
                     ],
