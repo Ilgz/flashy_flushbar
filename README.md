@@ -31,59 +31,71 @@ Import the package in your Dart code:
 ```dart
 import 'package:flashy_flushbar/flashy_flushbar.dart';
 ```
-To make the context accessible, wrap your app with FlashyFlushbarProvider in the widget tree:
+
+To make the context accessible, specify FlashyFlushbarProvider in the builder of your MaterialApp:
 
 ```dart
-void main() {
-  runApp(
-    FlashyFlushbarProvider(
-      child: MyApp(),
-    ),
-  );
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomePage(),
+      // here
+      builder: FlashyFlushbarProvider.init(),
+    );
+  }
 }
 ```
+
 &nbsp;
  <tr>
     <td><img src="https://raw.githubusercontent.com/Ilgz/flashy_flushbar/main/screenshots/example_1.jpg" height="200"></td>
   </tr>
 
-  
+
 Now you can use FlashyFlushbar in your Flutter app. Here's a basic example:
 
 ```dart
-FlashyFlushbar(
-  leadingWidget: const Icon(
-    Icons.error_outline,
-    color: Colors.black,
-    size: 24,
-  ),
-  message: 'Hello from Flashy Flushbar',
-  duration: const Duration(seconds: 1),
-  trailingWidget: IconButton(
-    icon: const Icon(
-      Icons.close,
-      color: Colors.black,
-      size: 24,
-    ),
-    onPressed: () {
-      FlashyFlushbar.cancel();
-    },
-  ),
-  isDismissible: false,
-).show();
+FlashyFlushbar
+(
+leadingWidget: const Icon(
+Icons.error_outline,
+color: Colors.black,
+size: 24,
+),
+message: 'Hello from Flashy Flushbar',
+duration: const Duration(seconds: 1),
+trailingWidget: IconButton(
+icon: const Icon(
+Icons.close,
+color: Colors.black,
+size: 24,
+),
+onPressed: () {
+FlashyFlushbar.cancel();
+},
+),
+isDismissible: false,
+).show(
+);
 ```
-
 
 To cancel the last displayed flushbar:
 
 ```dart
-FlashyFlushbar.cancel();
+FlashyFlushbar.cancel
+();
 ```
 
 To cancel all active flushbars:
 
 ```dart
-FlashyFlushbar.cancelAll();
+FlashyFlushbar.cancelAll
+();
 ```
+
 ## Example
+
 For a complete example, see the `example` folder in this repository.

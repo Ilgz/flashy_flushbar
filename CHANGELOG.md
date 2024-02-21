@@ -1,3 +1,9 @@
+## 1.0.2
+
+### Fixed
+
+- Fixed problem with localizations availability.
+
 ## 1.0.1
 
 ### Added

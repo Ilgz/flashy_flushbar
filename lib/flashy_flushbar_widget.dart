@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flashy_flushbar/flashy_proxy.dart';
 import 'package:flutter/material.dart';
 
@@ -57,8 +59,7 @@ class FlashyFlushbar extends StatefulWidget {
   /// The `onTap` parameter is a callback function to be executed when the flushbar
   /// is tapped. If provided, tapping the flushbar will execute this callback and
   /// hide the flushbar.
-  const FlashyFlushbar({
-    super.key,
+  FlashyFlushbar({
     this.duration = const Duration(seconds: 1),
     this.message = '',
     this.messageStyle = const TextStyle(
@@ -85,7 +86,7 @@ class FlashyFlushbar extends StatefulWidget {
     this.onTap,
     this.isDismissible = true,
     this.customWidget,
-  });
+  }) : super(key: UniqueKey());
 
   /// The duration for which the flushbar will be displayed.
   final Duration duration;
@@ -165,12 +166,7 @@ class FlashyFlushbar extends StatefulWidget {
     }
 
     Overlay.of(FlashyProxy.buildContext!, debugRequiredFor: this).insert(overlay);
-    FlashyProxy.entries[UniqueKey()] = overlay;
-    Future.delayed((animationDuration * 2) + (duration) + const Duration(milliseconds: 300), () {
-      if (overlay.mounted) {
-        overlay.remove();
-      }
-    });
+    FlashyProxy.entries[key!] = overlay;
   }
 
   /// Cancels the last displayed flushbar.
@@ -221,13 +217,18 @@ class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProvid
 
   late final animationController =
       AnimationController(vsync: this, duration: widget.animationDuration);
+  Timer? _hideTimer;
+  Timer? _removeTimer;
 
   @override
   void initState() {
-    Future.delayed(widget.duration + widget.animationDuration, () {
+    _hideTimer = Timer(widget.duration + widget.animationDuration, () {
       if (mounted) {
         animationController.reverse();
       }
+    });
+    _removeTimer = Timer(widget.duration + (widget.animationDuration * 2), () {
+      _removeFlushbarFromOverlay();
     });
 
     animationController.forward();
@@ -237,7 +238,14 @@ class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProvid
   @override
   void dispose() {
     animationController.dispose();
+    _hideTimer?.cancel();
+    _removeTimer?.cancel();
     super.dispose();
+  }
+
+  void _removeFlushbarFromOverlay() {
+    final entry = FlashyProxy.entries.remove(widget.key);
+    entry?.remove();
   }
 
   @override
@@ -245,15 +253,17 @@ class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProvid
     return SafeArea(
       child: Align(
         alignment: Alignment.topCenter,
-        child: SizedBox(
-          height: fullHeight,
-          child: GestureDetector(
-            onTap: widget.onTap != null
-                ? () {
-                    widget.onTap!();
-                    animationController.reverse();
-                  }
-                : null,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          key: const ValueKey('flashy_flushbar_gesture_key'),
+          onTap: widget.onTap != null
+              ? () {
+                  widget.onTap!();
+                  animationController.reverse();
+                }
+              : null,
+          child: SizedBox(
+            height: fullHeight,
             child: _DismissibleWrapper(
               dismissDirection: widget.dismissDirection,
               isDismissible: widget.isDismissible,

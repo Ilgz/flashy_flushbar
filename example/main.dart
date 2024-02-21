@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    const FlashyFlushbarProvider(
-      child: MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
@@ -15,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: FlashyFlushbarProvider.init(),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Flashy Flushbar Example'),
@@ -43,15 +42,14 @@ class MyApp extends StatelessWidget {
                   },
                 ),
                 boxShadows: const [
-                  BoxShadow(
-                      color: Colors.blue, blurRadius: 4.0, spreadRadius: 2.0),
+                  BoxShadow(color: Colors.blue, blurRadius: 4.0, spreadRadius: 2.0),
                 ],
               ).show();
 
               // Show undismissible FlashyFlushbar
-              const FlashyFlushbar(
+              FlashyFlushbar(
                 message: 'You can dismiss this!',
-                duration: Duration(seconds: 3),
+                duration: const Duration(seconds: 3),
                 dismissDirection: DismissDirection.horizontal,
                 isDismissible: false,
               ).show();

@@ -1,6 +1,6 @@
 name: flashy_flushbar
 description: "A highly customizable, dismissible, and animated flushbar (toast) for Flutter applications."
-version: 1.0.1
+version: 1.0.2
 repository: https://github.com/Ilgz/flashy_flushbar
 topics:
   - flutter-toast
