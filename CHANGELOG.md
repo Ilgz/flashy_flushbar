@@ -1,3 +1,9 @@
+## 1.1.0
+
+### Added
+
+- Added widget tests.
+
 ## 1.0.2
 
 ### Fixed
