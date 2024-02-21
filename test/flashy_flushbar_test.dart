@@ -17,7 +17,7 @@ void main() {
               onPressed: () {
                 FlashyFlushbar(
                   message: 'Test Message',
-                  duration: const Duration(seconds: 1),
+                  duration: Duration(seconds: 1),
                 ).show();
               },
               child: const Text('Show FlashyFlushbar'),
@@ -43,20 +43,20 @@ void main() {
           return ElevatedButton(
             onPressed: () {
               // Ensure an exception is thrown when show() is called
+              expect(() {
+                FlashyFlushbar(message: 'Test Message').show();
+              },
+                  throwsA(isA<Exception>().having(
+                    (e) => e.toString(),
+                    'message',
+                    'FlashyProxy.buildContext is null, please use FlashyFlushbarProvider',
+                  )));
             },
             child: const Text('Show FlashyFlushbar'),
           );
         },
       ),
     ));
-    expect(() {
-      FlashyFlushbar(message: 'Test Message').show();
-    },
-        throwsA(isA<Exception>().having(
-          (e) => e.toString(),
-          'message',
-          'FlashyProxy.buildContext is null, please use FlashyFlushbarProvider',
-        )));
   });
   testWidgets('Test cancel method throws exception', (tester) async {
     await tester.pumpWidget(MaterialApp(
