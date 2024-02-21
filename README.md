@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/Ilgz/flashy_flushbar/graph/badge.svg?token=PGCF6JHRAO)](https://codecov.io/gh/Ilgz/flashy_flushbar)
+
 # Flashy Flushbar
 
 A highly customizable, dismissible and animated flushbar (toast) for Flutter applications.
