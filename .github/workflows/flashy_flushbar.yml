@@ -8,8 +8,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        env:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: Ilgz/flashy_flushbar
+      - name: Run tests
+        run: dart test --concurrency=6 --platform vm --coverage=coverage test/
+        timeout-minutes: 2
+
+      - name: Collect coverage
+        run: dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages --report-on=lib
+        timeout-minutes: 1
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2.1.0
+        timeout-minutes: 1
+
+      - name: Check Code Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v1.2.1
+        timeout-minutes: 1
+        with:
+          path: ./coverage/lcov.info
+          min_coverage: 90
