@@ -15,10 +15,6 @@ jobs:
         timeout-minutes: 1
         run: |
           flutter pub get
-      - name: Run tests
-        run: flutter test --concurrency=6 --platform vm --coverage=coverage test/
-        timeout-minutes: 2
-
       - name: 🧪 Run tests
         timeout-minutes: 2
         run: |
