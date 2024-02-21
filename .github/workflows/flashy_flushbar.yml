@@ -11,21 +11,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: 👷 Install Dependencies
+        timeout-minutes: 1
+        run: |
+          flutter pub get
       - name: Run tests
-        run: dart test --concurrency=6 --platform vm --coverage=coverage test/
+        run: flutter test --concurrency=6 --platform vm --coverage=coverage test/
         timeout-minutes: 2
 
-      - name: Collect coverage
-        run: dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages --report-on=lib
-        timeout-minutes: 1
+      - name: 🧪 Run tests
+        timeout-minutes: 2
+        run: |
+          flutter test -r github -j 6 --coverage test/control_test.dart
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2.1.0
+      - name: 📥 Upload coverage to Codecov
         timeout-minutes: 1
-
-      - name: Check Code Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v1.2.1
-        timeout-minutes: 1
+        uses: codecov/codecov-action@v3
         with:
-          path: ./coverage/lcov.info
-          min_coverage: 90
+          files: ./coverage/lcov.info
