@@ -1,3 +1,9 @@
+## 1.2.0
+
+### Fixed
+
+- Fixed with not showing shadow correctly.
+
 ## 1.1.0
 
 ### Added

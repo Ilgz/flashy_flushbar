@@ -162,10 +162,12 @@ class FlashyFlushbar extends StatefulWidget {
       return this;
     });
     if (FlashyProxy.buildContext == null) {
-      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception(
+          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
 
-    Overlay.of(FlashyProxy.buildContext!, debugRequiredFor: this).insert(overlay);
+    Overlay.of(FlashyProxy.buildContext!, debugRequiredFor: this)
+        .insert(overlay);
     FlashyProxy.entries[key!] = overlay;
   }
 
@@ -178,7 +180,8 @@ class FlashyFlushbar extends StatefulWidget {
   /// Throws an exception if [FlashyProxy.buildContext] is null.
   static void cancel() {
     if (FlashyProxy.buildContext == null) {
-      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception(
+          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
     if (FlashyProxy.entries.isEmpty) return;
     final lastOverlayEntry = FlashyProxy.entries.values.last;
@@ -196,7 +199,8 @@ class FlashyFlushbar extends StatefulWidget {
   /// Throws an exception if [FlashyProxy.buildContext] is null.
   static void cancelAll() {
     if (FlashyProxy.buildContext == null) {
-      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception(
+          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
     for (final overlayEntry in FlashyProxy.entries.values) {
       if (overlayEntry.mounted) {
@@ -207,13 +211,15 @@ class FlashyFlushbar extends StatefulWidget {
   }
 }
 
-class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProviderStateMixin {
+class _FlashyFlushbarState extends State<FlashyFlushbar>
+    with SingleTickerProviderStateMixin {
   double get toastHeight => widget.height;
 
   double get fullHeight => toastHeight + widget.margin.top;
 
   double get fullWidth =>
-      MediaQuery.of(context).size.width - (widget.margin.left + widget.margin.right);
+      MediaQuery.of(context).size.width -
+      (widget.margin.left + widget.margin.right);
 
   late final animationController =
       AnimationController(vsync: this, duration: widget.animationDuration);
@@ -250,65 +256,70 @@ class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          key: const ValueKey('flashy_flushbar_gesture_key'),
-          onTap: widget.onTap != null
-              ? () {
-                  widget.onTap!();
-                  animationController.reverse();
-                }
-              : null,
-          child: SizedBox(
-            height: fullHeight,
-            child: _DismissibleWrapper(
-              dismissDirection: widget.dismissDirection,
-              isDismissible: widget.isDismissible,
-              child: AnimatedBuilder(
-                animation: animationController,
-                builder: (BuildContext context, Widget? child) {
-                  return Stack(
-                    children: [
-                      Positioned(
-                        top: (fullHeight * animationController.value) - (fullHeight),
-                        child: Container(
-                          width: fullWidth,
-                          height: toastHeight,
-                          margin: widget.margin,
-                          decoration: BoxDecoration(
-                            color: widget.backgroundColor,
-                            boxShadow: widget.boxShadows,
-                            borderRadius: widget.borderRadius,
-                          ),
-                          padding: EdgeInsets.only(
-                            left: widget.horizontalPadding.left,
-                            right: widget.horizontalPadding.right,
-                          ),
-                          child: widget.customWidget ??
-                              Row(
-                                children: [
-                                  widget.leadingWidget,
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: widget.messageHorizontalSpacing),
-                                      child: Text(
-                                        widget.message,
-                                        style: widget.messageStyle,
+    return DefaultTextStyle(
+      style: const TextStyle(),
+      child: SafeArea(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            key: const ValueKey('flashy_flushbar_gesture_key'),
+            onTap: widget.onTap != null
+                ? () {
+                    widget.onTap!();
+                    animationController.reverse();
+                  }
+                : null,
+            child: SizedBox(
+              height: fullHeight,
+              child: _DismissibleWrapper(
+                dismissDirection: widget.dismissDirection,
+                isDismissible: widget.isDismissible,
+                child: AnimatedBuilder(
+                  animation: animationController,
+                  builder: (BuildContext context, Widget? child) {
+                    return Stack(
+                      children: [
+                        Positioned(
+                          top: (fullHeight * animationController.value) -
+                              (fullHeight),
+                          child: Container(
+                            width: fullWidth,
+                            height: toastHeight,
+                            margin: widget.margin.copyWith(bottom: 0),
+                            decoration: BoxDecoration(
+                              color: widget.backgroundColor,
+                              boxShadow: widget.boxShadows,
+                              borderRadius: widget.borderRadius,
+                            ),
+                            padding: EdgeInsets.only(
+                              left: widget.horizontalPadding.left,
+                              right: widget.horizontalPadding.right,
+                            ),
+                            child: widget.customWidget ??
+                                Row(
+                                  children: [
+                                    widget.leadingWidget,
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: widget
+                                                .messageHorizontalSpacing),
+                                        child: Text(
+                                          widget.message,
+                                          style: widget.messageStyle,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  widget.trailingWidget,
-                                ],
-                              ),
+                                    widget.trailingWidget,
+                                  ],
+                                ),
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                },
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),

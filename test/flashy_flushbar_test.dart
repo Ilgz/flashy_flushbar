@@ -5,7 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   const animationDuration = Duration(milliseconds: 500);
   const duration = Duration(seconds: 1);
-  final overallDuration = (animationDuration * 2) + (duration) + const Duration(milliseconds: 300);
+  final overallDuration =
+      (animationDuration * 2) + (duration) + const Duration(milliseconds: 300);
   testWidgets('FlashyFlushbar Widget Test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MaterialApp(
@@ -135,7 +136,8 @@ void main() {
     // Expect the message to be removed from the widget tree
     expect(find.text('Test Message'), findsNothing);
   });
-  testWidgets('Test cancelAll method removes all overlay entries', (tester) async {
+  testWidgets('Test cancelAll method removes all overlay entries',
+      (tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MaterialApp(
       builder: FlashyFlushbarProvider.init(),
@@ -179,7 +181,8 @@ void main() {
     expect(find.text('Test Message 2'), findsNothing);
   });
 
-  testWidgets('Test onTap triggers callback and dismisses flushbar', (tester) async {
+  testWidgets('Test onTap triggers callback and dismisses flushbar',
+      (tester) async {
     bool onTapCalled = false;
 
     // Build our app and trigger a frame.
