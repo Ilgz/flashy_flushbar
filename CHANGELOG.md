@@ -1,3 +1,15 @@
+## 1.4.0
+
+### Added
+
+- Added animation from the bottom.
+
+## 1.3.0
+
+### Fixed
+
+- Close flushbar immediately when the user taps on it.
+
 ## 1.2.0
 
 ### Fixed

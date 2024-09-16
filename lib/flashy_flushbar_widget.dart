@@ -85,6 +85,7 @@ class FlashyFlushbar extends StatefulWidget {
     this.dismissDirection = DismissDirection.horizontal,
     this.onTap,
     this.isDismissible = true,
+    this.comingFromTop = true,
     this.customWidget,
   }) : super(key: UniqueKey());
 
@@ -145,6 +146,9 @@ class FlashyFlushbar extends StatefulWidget {
   /// The default value is `true`.
   final bool isDismissible;
 
+  /// If true, the flushbar will animate from the top of the screen, otherwise it will animate from the bottom.
+  final bool comingFromTop;
+
   ///
   /// If [customWidget] is provided, other properties such as [leadingWidget],
   /// [message], [trailingWidget], [messageStyle], etc., will be ignored.
@@ -162,12 +166,10 @@ class FlashyFlushbar extends StatefulWidget {
       return this;
     });
     if (FlashyProxy.buildContext == null) {
-      throw Exception(
-          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
 
-    Overlay.of(FlashyProxy.buildContext!, debugRequiredFor: this)
-        .insert(overlay);
+    Overlay.of(FlashyProxy.buildContext!, debugRequiredFor: this).insert(overlay);
     FlashyProxy.entries[key!] = overlay;
   }
 
@@ -180,8 +182,7 @@ class FlashyFlushbar extends StatefulWidget {
   /// Throws an exception if [FlashyProxy.buildContext] is null.
   static void cancel() {
     if (FlashyProxy.buildContext == null) {
-      throw Exception(
-          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
     if (FlashyProxy.entries.isEmpty) return;
     final lastOverlayEntry = FlashyProxy.entries.values.last;
@@ -199,8 +200,7 @@ class FlashyFlushbar extends StatefulWidget {
   /// Throws an exception if [FlashyProxy.buildContext] is null.
   static void cancelAll() {
     if (FlashyProxy.buildContext == null) {
-      throw Exception(
-          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
     for (final overlayEntry in FlashyProxy.entries.values) {
       if (overlayEntry.mounted) {
@@ -211,15 +211,13 @@ class FlashyFlushbar extends StatefulWidget {
   }
 }
 
-class _FlashyFlushbarState extends State<FlashyFlushbar>
-    with SingleTickerProviderStateMixin {
+class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProviderStateMixin {
   double get toastHeight => widget.height;
 
-  double get fullHeight => toastHeight + widget.margin.top;
+  double get fullHeight => toastHeight + widget.margin.top + widget.margin.bottom;
 
   double get fullWidth =>
-      MediaQuery.of(context).size.width -
-      (widget.margin.left + widget.margin.right);
+      MediaQuery.of(context).size.width - (widget.margin.left + widget.margin.right);
 
   late final animationController =
       AnimationController(vsync: this, duration: widget.animationDuration);
@@ -260,14 +258,14 @@ class _FlashyFlushbarState extends State<FlashyFlushbar>
       style: const TextStyle(),
       child: SafeArea(
         child: Align(
-          alignment: Alignment.topCenter,
+          alignment: widget.comingFromTop ? Alignment.topCenter : Alignment.bottomCenter,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             key: const ValueKey('flashy_flushbar_gesture_key'),
             onTap: widget.onTap != null
                 ? () {
                     widget.onTap!();
-                    animationController.reverse();
+                    _removeFlushbarFromOverlay();
                   }
                 : null,
             child: SizedBox(
@@ -281,12 +279,16 @@ class _FlashyFlushbarState extends State<FlashyFlushbar>
                     return Stack(
                       children: [
                         Positioned(
-                          top: (fullHeight * animationController.value) -
-                              (fullHeight),
+                          bottom: widget.comingFromTop
+                              ? null
+                              : (fullHeight * animationController.value) - (fullHeight),
+                          top: widget.comingFromTop
+                              ? (fullHeight * animationController.value) - (fullHeight)
+                              : null,
                           child: Container(
                             width: fullWidth,
                             height: toastHeight,
-                            margin: widget.margin.copyWith(bottom: 0),
+                            margin: widget.margin,
                             decoration: BoxDecoration(
                               color: widget.backgroundColor,
                               boxShadow: widget.boxShadows,
@@ -303,8 +305,7 @@ class _FlashyFlushbarState extends State<FlashyFlushbar>
                                     Expanded(
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal: widget
-                                                .messageHorizontalSpacing),
+                                            horizontal: widget.messageHorizontalSpacing),
                                         child: Text(
                                           widget.message,
                                           style: widget.messageStyle,
