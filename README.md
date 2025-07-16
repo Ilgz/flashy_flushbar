@@ -60,42 +60,38 @@ class MyApp extends StatelessWidget {
 Now you can use FlashyFlushbar in your Flutter app. Here's a basic example:
 
 ```dart
-FlashyFlushbar
-(
-leadingWidget: const Icon(
-Icons.error_outline,
-color: Colors.black,
-size: 24,
-),
-message: 'Hello from Flashy Flushbar',
-duration: const Duration(seconds: 1),
-trailingWidget: IconButton(
-icon: const Icon(
-Icons.close,
-color: Colors.black,
-size: 24,
-),
-onPressed: () {
-FlashyFlushbar.cancel();
-},
-),
-isDismissible: false,
-).show(
-);
+FlashyFlushbar(
+  leadingWidget: const Icon(
+    Icons.error_outline,
+    color: Colors.black,
+    size: 24,
+  ),
+  message: 'Hello from Flashy Flushbar',
+  duration: const Duration(seconds: 1),
+  trailingWidget: IconButton(
+    icon: const Icon(
+      Icons.close,
+      color: Colors.black,
+      size: 24,
+    ),
+    onPressed: () {
+      FlashyFlushbar.cancel();
+    },
+  ),
+  isDismissible: false,
+).show();
 ```
 
 To cancel the last displayed flushbar:
 
 ```dart
-FlashyFlushbar.cancel
-();
+FlashyFlushbar.cancel();
 ```
 
 To cancel all active flushbars:
 
 ```dart
-FlashyFlushbar.cancelAll
-();
+FlashyFlushbar.cancelAll();
 ```
 
 ## Example
