@@ -166,10 +166,12 @@ class FlashyFlushbar extends StatefulWidget {
       return this;
     });
     if (FlashyProxy.buildContext == null) {
-      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception(
+          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
 
-    Overlay.of(FlashyProxy.buildContext!, debugRequiredFor: this).insert(overlay);
+    Overlay.of(FlashyProxy.buildContext!, debugRequiredFor: this)
+        .insert(overlay);
     FlashyProxy.entries[key!] = overlay;
   }
 
@@ -182,7 +184,8 @@ class FlashyFlushbar extends StatefulWidget {
   /// Throws an exception if [FlashyProxy.buildContext] is null.
   static void cancel() {
     if (FlashyProxy.buildContext == null) {
-      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception(
+          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
     if (FlashyProxy.entries.isEmpty) return;
     final lastOverlayEntry = FlashyProxy.entries.values.last;
@@ -200,7 +203,8 @@ class FlashyFlushbar extends StatefulWidget {
   /// Throws an exception if [FlashyProxy.buildContext] is null.
   static void cancelAll() {
     if (FlashyProxy.buildContext == null) {
-      throw Exception("FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
+      throw Exception(
+          "FlashyProxy.buildContext is null, please use FlashyFlushbarProvider");
     }
     for (final overlayEntry in FlashyProxy.entries.values) {
       if (overlayEntry.mounted) {
@@ -211,13 +215,16 @@ class FlashyFlushbar extends StatefulWidget {
   }
 }
 
-class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProviderStateMixin {
+class _FlashyFlushbarState extends State<FlashyFlushbar>
+    with SingleTickerProviderStateMixin {
   double get toastHeight => widget.height;
 
-  double get fullHeight => toastHeight + widget.margin.top + widget.margin.bottom;
+  double get fullHeight =>
+      toastHeight + widget.margin.top + widget.margin.bottom;
 
   double get fullWidth =>
-      MediaQuery.of(context).size.width - (widget.margin.left + widget.margin.right);
+      MediaQuery.of(context).size.width -
+      (widget.margin.left + widget.margin.right);
 
   late final animationController =
       AnimationController(vsync: this, duration: widget.animationDuration);
@@ -258,7 +265,9 @@ class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProvid
       style: const TextStyle(),
       child: SafeArea(
         child: Align(
-          alignment: widget.comingFromTop ? Alignment.topCenter : Alignment.bottomCenter,
+          alignment: widget.comingFromTop
+              ? Alignment.topCenter
+              : Alignment.bottomCenter,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             key: const ValueKey('flashy_flushbar_gesture_key'),
@@ -281,9 +290,11 @@ class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProvid
                         Positioned(
                           bottom: widget.comingFromTop
                               ? null
-                              : (fullHeight * animationController.value) - (fullHeight),
+                              : (fullHeight * animationController.value) -
+                                  (fullHeight),
                           top: widget.comingFromTop
-                              ? (fullHeight * animationController.value) - (fullHeight)
+                              ? (fullHeight * animationController.value) -
+                                  (fullHeight)
                               : null,
                           child: Container(
                             width: fullWidth,
@@ -305,7 +316,8 @@ class _FlashyFlushbarState extends State<FlashyFlushbar> with SingleTickerProvid
                                     Expanded(
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal: widget.messageHorizontalSpacing),
+                                            horizontal: widget
+                                                .messageHorizontalSpacing),
                                         child: Text(
                                           widget.message,
                                           style: widget.messageStyle,

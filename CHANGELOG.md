@@ -1,3 +1,9 @@
+## 1.4.1
+
+### Changed
+
+- Reformatted README.md file
+
 ## 1.4.0
 
 ### Added
